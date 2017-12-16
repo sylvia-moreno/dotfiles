@@ -1,0 +1,67 @@
+#!/bin/bash
+
+system_type=$(uname -s)
+
+if [ "$system_type" = "Darwin" ]; then
+
+  # Update macOS apps
+  echo 'Installing/Upgrading macOS apps...'
+  sudo softwareupdate -i -a
+
+  # Install all homebrew packages inside Brewfile
+  echo 'Installing/Upgrading brew apps...'
+
+  # Check for Homebrew Installation
+  if ! which brew > /dev/null; then
+      # Install Homebrew
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+      # Support bundle
+      brew tap 'Homebrew/bundle'
+
+      # Support mac app store
+      brew install mas
+  fi;
+
+  # Update Homebrew
+  brew update
+
+  # Install everything inside Brewfile
+  brew bundle --global --verbose
+
+  # Remove installed formulae not in Brewfile
+  brew bundle cleanup --global --force
+
+  # Remove outdated versions from the cellar
+  brew cleanup
+
+  # Switch to using brew-installed bash as default shell
+  if ! fgrep -q '/usr/local/bin/bash' /etc/shells; then
+    echo '/usr/local/bin/bash' | sudo tee -a /etc/shells;
+    chsh -s /usr/local/bin/bash;
+  fi;
+
+  # possibly add something here to ensure iTerm2 is installed using Homebrew
+  # cask like in the previous example
+
+  if [ -d "$HOME/.iterm2" ]; then
+    echo "Setting iTerm preference folder"
+    defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.config/iterm2"
+  fi
+  
+  # update node global packages
+  npm install npm -g
+  npm update -g
+
+  # Update ruby packages
+  gem update --system
+  gem update
+  gem cleanup
+
+  # Install vim package manager Dein
+  git clone https://github.com/Shougo/dein.vim.git ~/.vim/dein/repos/github.com/Shougo/dein.vim
+
+  # Install neovim python/ruby support
+  pip3 install neovim
+  gem install neovim
+fi

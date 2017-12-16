@@ -13,7 +13,6 @@ export NODE_REPL_MODE='sloppy';
 # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
 export PYTHONIOENCODING='UTF-8';
 
-shopt -s histappend
 # Increase Bash history size. Allow 32³ entries; the default is 500.
 export HISTSIZE='32768';
 export HISTFILESIZE="${HISTSIZE}";
@@ -22,65 +21,6 @@ export HISTCONTROL='ignoreboth';
 
 # Custom shell colors
 export LS_COLORS='no=00:fi=00:di=01;31:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
-
-# Customize shell
-shopt -s extglob
-shopt -qs checkwinsize
-shopt -qs hostcomplete
-shopt -qs no_empty_cmd_completion
-stty stop undef
-stty -echoctl
-
-# Autocorrect typos in path names when using `cd`
-shopt -s cdspell;
-
-# Make Tab autocomplete regardless of filename case
-set completion-ignore-case on
-
-# List all matches in case multiple possible completions are possible
-set show-all-if-ambiguous on
-
-# Immediately add a trailing slash when autocompleting symlinks to directories
-set mark-symlinked-directories on
-
-# Do not autocomplete hidden files unless the pattern explicitly begins with a dot
-set match-hidden-files off
-
-# Show all autocomplete results at once
-set page-completions off
-
-# If there are more than 200 possible completions for a word, ask to show them all
-set completion-query-items 200
-
-# Show extra file information when completing, like `ls -F` does
-set visible-stats on
-
-# Be more intelligent when autocompleting by also looking at the text after
-# the cursor. For example, when the current line is "cd ~/src/mozil", and
-# the cursor is on the "z", pressing Tab will not autocomplete it to "cd
-# ~/src/mozillail", but to "cd ~/src/mozilla". (This is supported by the
-# Readline used by Bash 4.)
-set skip-completed-text on
-
-# Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
-set input-meta on
-set output-meta on
-set convert-meta off
-
-# Add tab completion for many Bash commands
-if which brew > /dev/null && [ -f "$(brew --prefix)/etc/bash-completion/bash_completion" ]; then
-  source "$(brew --prefix)/etc/bash-completion/bash_completion";
-fi;
-
-# Add git completion
-if which brew > /dev/null && [ -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ]; then
-  source "$(brew --prefix)/etc/bash_completion.d/git-completion.bash";
-fi;
-
-# Add git flow completion
-if which brew > /dev/null && [ -f "$(brew --prefix)/etc/bash_completion.d/git-flow-completion.bash" ]; then
-  source "$(brew --prefix)/etc/bash_completion.d/git-flow-completion.bash";
-fi;
 
 # Prefer US English and use UTF-8.
 export LANG='en_US.UTF-8';
