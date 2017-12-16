@@ -1,0 +1,160 @@
+#!/bin/bash
+
+system_type=$(uname -s)
+
+# in macOS only
+if [ "$system_type" = "Darwin" ]; then
+	alias git="hub" # Github client
+	# Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
+	alias update="$HOME/.setup/update.sh"
+
+	# macOS has no `md5sum`, so use `md5` as a fallback
+	alias md5sum="md5"
+	# macOS has no `sha1sum`, so use `shasum` as a fallback
+	alias sha1sum="shasum"
+	# PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
+	alias plistbuddy="/usr/libexec/PlistBuddy"
+	# Airport CLI alias
+	alias airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
+	# Transmission
+	alias tsm="transmission-remote"
+	# Google Chrome
+	alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+	# Kill all the tabs in Chrome to free up memory
+	# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
+	alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+
+	# Lock the screen (when going AFK)
+	alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+	# Kill audio interfaces
+	alias killaudio="sudo kill `ps -ax | grep 'coreaudiod' | grep 'sbin' | awk '{print $1}'`"
+	# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
+	alias muteaudio="osascript -e 'set volume output muted true'"
+	alias maxaudio="osascript -e 'set volume output volume 100'"
+	# Disable Spotlight
+	alias spotoff="sudo mdutil -a -i off"
+	# Enable Spotlight
+	alias spoton="sudo mdutil -a -i on"
+	# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
+	alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
+	# Show/hide hidden files in Finder
+	alias showhidden="defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder"
+	alias hidehidden="defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder"
+	# Hide/show all desktop icons (useful when presenting)
+	alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+	alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+	# rebuild the Launch Services database and get rid of duplicates in the Open With submenu
+	alias lscleanup='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user | killall Finder'
+	# Recursively delete `.DS_Store` files
+	alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+	# Empty the Trash on all mounted volumes and the main HDD.
+	# Also, clear Apple’s System Logs to improve shell startup speed.
+	# Finally, clear download history from quarantine. https://mths.be/bum
+	alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
+	# Flush Directory Service cache
+	alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
+
+	#  Caffeine replacement
+	alias sleep='m sleep'
+	alias nosleep5m='m nosleep until 300'
+	alias nosleep10m='m nosleep until 600'
+	alias nosleep15m='m nosleep until 900'
+	alias nosleep30m='m nosleep until 1800'
+	alias nosleep1h='m nosleep until 3600'
+	alias nosleep2h='m nosleep until 7200'
+	alias nosleep5h='m nosleep until 18000'
+
+	# JavaScriptCore REPL
+	jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
+	[ -e "${jscbin}" ] && alias jsc="${jscbin}";
+	unset jscbin;
+fi
+
+# Random alias
+alias g="git"
+if ${nvim}; then
+	alias vim="nvim"
+fi
+
+# Shell helpers
+alias reload="exec ${SHELL} -l" # Reload the shell (i.e. invoke as a login shell)
+alias clr='clear;echo "Currently logged in on $(tty), as $(whoami) in directory $(pwd)."'
+alias cls='clr' # clean screen
+
+# Filesystem Listing
+alias ls='gls --color' # List all files colorized in long format
+alias l="ls -lF" # List directory and files except dotfiles
+alias lsa="ls -laF" # List all files colorized in long format, including dot files
+alias lsd="ls -lF | grep --color=never '^d'" # List only directories
+alias ll='ls -l --time-style=+"%Y-%m-%d %H:%M:%S" -h -a'
+alias tree="tree -F -C --dirsfirst" # show colored filesystem tree
+
+# Filesystem Navigation
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ~="cd ~" # `cd` is probably faster to type though
+alias -- -="cd -"
+alias doc="cd ~/Documents"
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
+alias p="cd ~/Projects"
+
+# Filesystem Helpers
+alias copy="tr -d '\n' | pbcopy"
+alias paste='pbpaste'
+alias mkdir='mkdir -p'                          # create dirs recursively
+alias ln='ln -v'                                # make ln verbose
+alias cat="ccat" # Colored cat replacement
+alias count='wc -l'                             # count lines
+alias size='du -sh'                             # get folder size
+alias sizer='du -h -c'                          # get and print folder size for all folders, recursively
+alias disks='df -H -l'                          # show available disk space
+
+# Grep
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# curl
+alias ie6curl='curl -H "User-Agent: Mozilla/5.0 (Windows; U; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)"'
+alias ffcurl='curl -H "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.8) Gecko/2009032609 Firefox/3.0.0 (.NET CLR 3.5.30729)"'
+alias chcurl='curl -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.19 Safari/537.36"'
+alias gbcurl='curl -H "User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"'
+
+# http & web
+alias encode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+alias decode='python -c "import sys, urllib as ul; print ul.unquote_plus(sys.argv[1])"'
+alias sniff="sudo ngrep -d 'en0' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en0 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+
+# network
+alias ping='ping -c 5' # pings with 5 packets, not unlimited
+alias nmap="nmap -v -v -T5"
+alias nmapp="nmap -Pn -A --osscan_limit"
+alias n="netstat -np tcp"
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'" # Show active network interfaces
+alias localip="ipconfig getifaddr en0"
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias ips="ifconfig | grep 'inet ' | cut -d ' ' -f 2"
+
+# other helpers
+alias hosts='sudo vim /private/etc/hosts'
+alias sudo='sudo ' # Enable aliases to be sudo’ed
+alias week='date +%V' # Get week number
+alias path='echo $PATH | tr ":" "\n" | sort' # print $path nicely
+alias quickdiff='diff --side-by-side --suppress-common-lines -W 150'
+
+# Canonical hex dump; some systems have this symlinked
+command -v hd > /dev/null || alias hd="hexdump -C"
+
+# Intuitive map function
+# For example, to list all directories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map="xargs -n1"
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+	alias "${method}"="lwp-request -m '${method}'"
+done
