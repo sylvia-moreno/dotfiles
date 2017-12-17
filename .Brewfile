@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Install command-line tools using Homebrew.
 
 # Support bundle
@@ -71,7 +73,8 @@ brew 'trash'
 brew 'tree'
 brew 'webkit2png'
 brew 'yarn', args: ['without-node']
-brew 'kryptco/tap/kr' # Kryptonite ssh
+tap 'kryptco/tap'
+brew 'kr' # Kryptonite ssh
 
 #  Default install directory for cask apps
 cask_args appdir: '/Applications'

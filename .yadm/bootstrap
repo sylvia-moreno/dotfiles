@@ -2,10 +2,13 @@
 
 system_type=$(uname -s)
 
+echo "Updating the yadm repo origin URL"
+yadm remote set-url origin "git@github.com:julon/dotfiles.git"
+
 if [ "$system_type" = "Darwin" ]; then
 
   # Update macOS apps
-  echo 'Installing/Upgrading macOS apps...'
+  echo 'Upgrading macOS apps...'
   sudo softwareupdate -i -a
 
   # Install all homebrew packages inside Brewfile
@@ -15,22 +18,19 @@ if [ "$system_type" = "Darwin" ]; then
   if ! which brew > /dev/null; then
       # Install Homebrew
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-      # Support bundle
-      brew tap 'Homebrew/bundle'
-
-      # Support mac app store
-      brew install mas
   fi;
 
   # Update Homebrew
   brew update
 
-  # Install everything inside Brewfile
-  brew bundle --global --verbose
-
-  # Remove installed formulae not in Brewfile
-  brew bundle cleanup --global --force
+  if [ -f "$HOME/.Brewfile" ]; then
+    echo "Updating homebrew bundle"
+    # Install everything inside Brewfile
+    brew bundle --global --verbose
+     
+    # Remove installed formulae not in Brewfile
+    brew bundle cleanup --global --force
+  fi
 
   # Remove outdated versions from the cellar
   brew cleanup
@@ -43,8 +43,7 @@ if [ "$system_type" = "Darwin" ]; then
 
   # possibly add something here to ensure iTerm2 is installed using Homebrew
   # cask like in the previous example
-
-  if [ -d "$HOME/.iterm2" ]; then
+  if [ ! -d "$HOME/.config/iterm2" ]; then
     echo "Setting iTerm preference folder"
     defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.config/iterm2"
   fi
@@ -59,9 +58,16 @@ if [ "$system_type" = "Darwin" ]; then
   gem cleanup
 
   # Install vim package manager Dein
-  git clone https://github.com/Shougo/dein.vim.git ~/.vim/dein/repos/github.com/Shougo/dein.vim
-
+  if [ ! -d "$HOME/.vim/dein/repos/github.com/Shougo/dein.vim" ]; then
+    git clone https://github.com/Shougo/dein.vim.git $HOME/.vim/dein/repos/github.com/Shougo/dein.vim
+  fi
+  
   # Install neovim python/ruby support
   pip3 install neovim
   gem install neovim
+
+  if command -v vim >/dev/null 2>&1; then
+    echo "Bootstrapping Vim"
+    nvim '+"call dein#install()"' '+qall'
+  fi
 fi
