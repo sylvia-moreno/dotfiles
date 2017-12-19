@@ -622,10 +622,10 @@ expect eof
 
     # disable location services
     ##
-    sudo launchctl unload /System/Library/LaunchDaemons/com.apple.locationd.plist
-    sudo defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd.$uuid1 LocationServicesEnabled -int 0
-    sudo chown -R _locationd:_locationd /var/db/locationd
-    sudo launchctl load /System/Library/LaunchDaemons/com.apple.locationd.plist
+    #sudo launchctl unload /System/Library/LaunchDaemons/com.apple.locationd.plist
+    #sudo defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd.$uuid1 LocationServicesEnabled -int 0
+    #sudo chown -R _locationd:_locationd /var/db/locationd
+    #sudo launchctl load /System/Library/LaunchDaemons/com.apple.locationd.plist
 
     # disable sending diagnostics data to apple
     ##
@@ -1060,13 +1060,14 @@ expect eof
         	echo deleting autostartentry for $autostartapp
         	osascript -e 'tell application "System Events" to delete login item "'$autostartapp'"'
         	unset IFS
-        done
+		done
     else
         :
     fi
 
     # adding startup-items
     # osascript -e 'tell application "System Events" to make login item at end with properties {name:"name", path:"/path/to/itemname", hidden:false}'
+    osascript -e 'tell application "System Events" to make login item at end with properties {name:"Backup and Sync from Google", path:"/Applications/Backup and Sync from Google.app", hidden:false}'
 
 	# }}}
 
@@ -1749,11 +1750,11 @@ expect eof
 
     # enable / disable plugins individually
     # java
-    /usr/libexec/PlistBuddy -c "Set :PlugInInfo:'com.oracle.java.JavaAppletPlugin':plugInCurrentState YES" ~/Library/Preferences/com.apple.safari.plist
+    #/usr/libexec/PlistBuddy -c "Set :PlugInInfo:'com.oracle.java.JavaAppletPlugin':plugInCurrentState YES" ~/Library/Preferences/com.apple.safari.plist
     # acrobat
-    /usr/libexec/PlistBuddy -c "Set :PlugInInfo:'com.adobe.acrobat.pdfviewerNPAPI':plugInCurrentState YES" ~/Library/Preferences/com.apple.safari.plist
+    #/usr/libexec/PlistBuddy -c "Set :PlugInInfo:'com.adobe.acrobat.pdfviewerNPAPI':plugInCurrentState YES" ~/Library/Preferences/com.apple.safari.plist
     # vlc web plugin
-    /usr/libexec/PlistBuddy -c "Set :PlugInInfo:'org.videolan.vlc-npapi-plugin':plugInCurrentState YES" ~/Library/Preferences/com.apple.safari.plist
+    #/usr/libexec/PlistBuddy -c "Set :PlugInInfo:'org.videolan.vlc-npapi-plugin':plugInCurrentState YES" ~/Library/Preferences/com.apple.safari.plist
 
     # plugin policies
     # on = PlugInPolicyAllowWithSecurityRestrictions
@@ -1761,11 +1762,11 @@ expect eof
     # ask = PlugInPolicyAsk
 
     # java
-    /usr/libexec/PlistBuddy -c "Set :ManagedPlugInPolicies:'com.oracle.java.JavaAppletPlugin':PlugInFirstVisitPolicy PlugInPolicyAllowWithSecurityRestrictions" ~/Library/Preferences/com.apple.safari.plist
+    #/usr/libexec/PlistBuddy -c "Set :ManagedPlugInPolicies:'com.oracle.java.JavaAppletPlugin':PlugInFirstVisitPolicy PlugInPolicyAllowWithSecurityRestrictions" ~/Library/Preferences/com.apple.safari.plist
     # acrobat
-    /usr/libexec/PlistBuddy -c "Set :ManagedPlugInPolicies:'com.adobe.acrobat.pdfviewerNPAPI':PlugInFirstVisitPolicy PlugInPolicyAllowWithSecurityRestrictions" ~/Library/Preferences/com.apple.safari.plist
+    #/usr/libexec/PlistBuddy -c "Set :ManagedPlugInPolicies:'com.adobe.acrobat.pdfviewerNPAPI':PlugInFirstVisitPolicy PlugInPolicyAllowWithSecurityRestrictions" ~/Library/Preferences/com.apple.safari.plist
     # vlc web plugin
-    /usr/libexec/PlistBuddy -c "Set :ManagedPlugInPolicies:'org.videolan.vlc-npapi-plugin':PlugInFirstVisitPolicy PlugInPolicyAsk" ~/Library/Preferences/com.apple.safari.plist
+    #/usr/libexec/PlistBuddy -c "Set :ManagedPlugInPolicies:'org.videolan.vlc-npapi-plugin':PlugInFirstVisitPolicy PlugInPolicyAsk" ~/Library/Preferences/com.apple.safari.plist
     # quicktime
     #/usr/libexec/PlistBuddy -c "Set :ManagedPlugInPolicies:'com.apple.QuickTime Plugin.plugin':PlugInFirstVisitPolicy PlugInPolicyAllowWithSecurityRestrictions" ~/Library/Preferences/com.apple.safari.plist
 

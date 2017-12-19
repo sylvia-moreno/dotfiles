@@ -92,16 +92,6 @@ set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim " path to dein.vim
 call dein#begin(expand('~/.vim/dein')) " plugins root path
 
 " Plugin list
-call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/vimproc.vim', {
-\ 'build': {
-\     'windows': 'tools\\update-dll-mingw',
-\     'cygwin': 'make -f make_cygwin.mak',
-\     'mac': 'make -f make_mac.mak',
-\     'linux': 'make',
-\     'unix': 'gmake',
-\    },
-\ })
 call dein#add('Shougo/denite.nvim')
 call dein#add('Shougo/deoplete.nvim')
 if !has('nvim')
