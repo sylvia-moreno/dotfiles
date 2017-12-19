@@ -142,23 +142,27 @@ call dein#add('zchee/deoplete-jedi')
 call dein#end()
 " }}}
 " Plugin: Airline {{{
+
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_powerline_fonts = 1
+
 " }}}
 " Plugin: CtrlP {{{
 
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+"let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
 " }}}
 " Plugin: Deoplete {{{
+"
 let g:deoplete#enable_at_startup = 1
+
 " }}}
 " Plugin: EditorConfig {{{
 
@@ -171,6 +175,7 @@ let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
 " }}}
 " Plugin: NerdTree {{{
+
 silent! nmap <F2> :NERDTreeToggle<CR>
 silent! map <F3> :NERDTreeFind<CR>
 
@@ -178,8 +183,10 @@ let g:NERDTreeMapActivateNode="<F3>"
 let g:NERDTreeMapPreview="<F4>"
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
 " }}}
 " Plugin: Syntastic {{{
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -188,6 +195,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
 " }}}
 " Plugin: Indent-guides {{{
 
@@ -213,12 +221,12 @@ set secure
 
 " toggle between number and relativenumber
 function! ToggleNumber()
-    if(&relativenumber == 1)
-        set norelativenumber
-        set number
-    else
-        set relativenumber
-    endif
+	if(&relativenumber == 1)
+		set norelativenumber
+		set number
+	else
+		set relativenumber
+	endif
 endfunc
 
 " Strip trailing whitespace (,ss)
@@ -248,3 +256,4 @@ endif
 " vim: set foldmethod=marker :
 
 " }}}
+"
